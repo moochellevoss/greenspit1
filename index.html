@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Grypnôse">
+<meta name="theme-color" content="#0a0a0c">
+<title>Grypnôse · Green Spit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0a0c;--surface:#111116;--surface2:#18181f;--border:rgba(255,255,255,.08);
+  --teal:#5ecfb1;--teal-d:rgba(94,207,177,.15);
+  --violet:#9b7fe8;--violet-d:rgba(155,127,232,.15);
+  --coral:#e87f7f;--coral-d:rgba(232,127,127,.13);
+  --gold:#c9a96e;--gold-d:rgba(201,169,110,.13);
+  --text:#e8e4dc;--dim:rgba(232,228,220,.38);--mid:rgba(232,228,220,.68);
+  --r:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{margin:0;padding:0;height:100%;width:100%;overflow:hidden;background:#040408;font-family:'EB Garamond',serif;-webkit-tap-highlight-color:transparent;}
+.phone-wrap{position:fixed;top:50%;left:50%;width:390px;height:844px;transform:translate(-50%,-50%) scale(0.7);transform-origin:center center;}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;opacity:.5;}
+button,.bk,.splash,.sp-play,.disc-toggle-row,.disc-cta,.bclose,.brh{cursor:pointer!important;}
+.phone{width:390px;height:844px;background:var(--bg);border-radius:50px;border:1.5px solid rgba(255,255,255,.1);box-shadow:0 0 0 1px rgba(0,0,0,.8),0 40px 80px rgba(0,0,0,.8),inset 0 1px 0 rgba(255,255,255,.05);position:relative;overflow:hidden;display:flex;flex-direction:column;}
+.orb{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0;}
+.orb-t{width:220px;height:220px;background:rgba(94,207,177,.09);top:-80px;right:-50px;}
+.orb-v{width:200px;height:200px;background:rgba(155,127,232,.07);bottom:80px;left:-70px;}
+.notch{width:120px;height:34px;background:var(--bg);border-radius:0 0 20px 20px;position:absolute;top:0;left:50%;transform:translateX(-50%);z-index:20;border:1.5px solid rgba(255,255,255,.06);border-top:none;}
+.statusbar{display:flex;align-items:center;justify-content:space-between;padding:14px 28px 0;z-index:10;position:relative;flex-shrink:0;}
+.st{font-family:'Space Mono',monospace;font-size:11px;color:var(--dim);}
+.sc-wrap{flex:1;position:relative;overflow:hidden;}
+
+/* HOME */
+.home{position:absolute;inset:0;display:flex;flex-direction:column;padding:0 28px;}
+.home-head{padding:24px 0 8px;}
+.wordmark{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;letter-spacing:.12em;color:var(--text);font-style:italic;}
+.wordmark span{color:var(--teal);}
+.subtitle{font-family:'Space Mono',monospace;font-size:10px;color:var(--dim);letter-spacing:.18em;text-transform:uppercase;margin-top:4px;}
+.home-card{margin-top:48px;border:1px solid var(--border);border-radius:var(--r);padding:22px 22px 18px;background:linear-gradient(160deg,rgba(94,207,177,.04),rgba(155,127,232,.03));position:relative;overflow:hidden;}
+.home-card::before{content:'';position:absolute;left:0;top:18px;bottom:18px;width:2px;background:var(--teal);opacity:.65;}
+.route-name{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:32px;font-weight:300;color:var(--text);line-height:1.1;}
+.route-meta{font-family:'Space Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:.14em;text-transform:uppercase;margin-top:6px;}
+.route-note{font-family:'EB Garamond',serif;font-size:15px;color:var(--mid);line-height:1.65;margin-top:14px;font-style:italic;}
+.cat-badge{display:inline-block;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.15em;text-transform:uppercase;padding:4px 10px;border-radius:20px;border:1px solid rgba(94,207,177,.35);color:var(--teal);background:var(--teal-d);margin-top:14px;}
+.pre-settings{margin-top:22px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:6px 16px;}
+.pref-row{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--border);}
+.pref-row:last-child{border-bottom:none;}
+.pref-lbl{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--text);}
+.pref-sub{font-family:'EB Garamond',serif;font-size:13px;color:var(--dim);margin-top:1px;font-style:italic;}
+.pref-toggle{width:42px;height:24px;border-radius:12px;background:var(--border);position:relative;cursor:pointer;transition:background .2s;flex-shrink:0;}
+.pref-toggle.on{background:var(--teal);}
+.pref-knob{position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.3);}
+.pref-toggle.on .pref-knob{transform:translateX(18px);}
+.sp-play{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;margin-top:22px;background:linear-gradient(135deg,rgba(94,207,177,.15),rgba(155,127,232,.12));border:1px solid rgba(94,207,177,.35);border-radius:var(--r);padding:16px;font-family:'Cormorant Garamond',serif;font-size:21px;font-style:italic;color:var(--teal);cursor:pointer;letter-spacing:.06em;transition:transform .15s, background .2s;}
+.sp-play:active{transform:scale(.985);}
+.home-foot{margin-top:auto;padding:18px 0 28px;text-align:center;}
+.home-foot-cas{font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);letter-spacing:.18em;text-transform:uppercase;opacity:.6;}
+
+/* Reader */
+#sreader{flex:1;position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;padding:36px 32px;cursor:pointer;user-select:none;-webkit-user-select:none;overflow:hidden;transition:background 1.8s ease;}
+#sreader-bloom{position:absolute;width:500px;height:500px;border-radius:50%;filter:blur(100px);pointer-events:none;transition:background 2s ease,transform 2s ease;background:radial-gradient(circle,rgba(94,207,177,.06),transparent 70%);transform:translate(-50%,-50%);top:50%;left:50%;}
+#sreader-phase{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);margin-bottom:22px;height:14px;transition:opacity .4s;position:relative;z-index:2;}
+#sreader-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:24px;color:var(--text);line-height:1.65;text-align:center;max-width:320px;transition:opacity .5s;position:relative;z-index:2;}
+#sreader-tap{position:absolute;bottom:48px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:rgba(94,207,177,0.35);z-index:2;}
+#sreader-done{display:none;position:absolute;bottom:48px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;color:var(--teal);z-index:2;}
+#sreader-progress{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);display:flex;gap:5px;transition:opacity .4s;z-index:2;}
+.rdr-dot{width:4px;height:4px;border-radius:50%;background:rgba(94,207,177,.12);transition:background .3s, transform .3s;}
+.rdr-dot.on{background:var(--teal);transform:scale(1.2);}
+.rdr-dot.done{background:rgba(94,207,177,.4);}
+#rdr-breath{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(1);width:80px;height:80px;border-radius:50%;border:1.5px solid rgba(94,207,177,.22);transition:transform 5.5s cubic-bezier(.15,0,.55,1), border-color .8s, opacity .8s;opacity:0;z-index:1;}
+#rdr-breath.inhale{transform:translate(-50%,-50%) scale(2.8);opacity:.5;}
+#rdr-breath.exhale{transform:translate(-50%,-50%) scale(0.5);transition:transform 6s cubic-bezier(.35,0,.15,1), opacity 6s ease;opacity:0;}
+@keyframes cardIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.sreader-animate{animation:cardIn .55s cubic-bezier(.25,.46,.45,.94) forwards;}
+#reader-mute{position:absolute;top:24px;right:24px;width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:rgba(20,20,28,.6);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:5;transition:background .2s, border-color .2s;}
+#reader-mute:active{transform:scale(.92);}
+#reader-mute svg{width:18px;height:18px;display:block;}
+
+/* Breathing overlay */
+.boverlay{position:absolute;inset:0;background:rgba(6,6,10,.97);z-index:35;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .4s,background 1.2s;}
+.boverlay.b-inhale{background:rgba(4,14,12,.97);}
+.boverlay.b-hold{background:rgba(8,6,18,.97);}
+.boverlay.b-exhale{background:rgba(4,8,8,.97);}
+.boverlay.on{opacity:1;pointer-events:all;}
+.bclose{position:absolute;top:60px;right:24px;width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:var(--surface);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--dim);font-size:16px;}
+.borb-wrap{width:280px;height:280px;position:relative;display:flex;align-items:center;justify-content:center;}
+.borb-core{width:160px;height:160px;border-radius:50%;border:2px solid rgba(94,207,177,.4);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;transition:transform 4s cubic-bezier(.4,0,.2,1),border-color .8s,box-shadow .8s,background .8s;}
+.borb-core.inhale{transform:scale(1.28);border-color:rgba(94,207,177,.8);background:radial-gradient(circle,rgba(94,207,177,.18) 0%,rgba(94,207,177,.04) 70%,transparent 100%);box-shadow:0 0 40px rgba(94,207,177,.15),inset 0 0 30px rgba(94,207,177,.06);}
+.borb-core.hold{transform:scale(1.28);border-color:rgba(155,127,232,.7);background:radial-gradient(circle,rgba(155,127,232,.18) 0%,rgba(155,127,232,.04) 70%,transparent 100%);box-shadow:0 0 40px rgba(155,127,232,.15),inset 0 0 30px rgba(155,127,232,.06);}
+.borb-core.exhale{transform:scale(1);border-color:rgba(94,207,177,.3);background:radial-gradient(circle,rgba(94,207,177,.06) 0%,transparent 70%);box-shadow:none;}
+.bphase{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--teal);}
+.btext{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px;color:var(--text);text-align:center;max-width:110px;line-height:1.3;transition:opacity .4s;}
+.bctag{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-top:22px;}
+#breath-intro{display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 36px;max-width:340px;}
+#breath-intro-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:21px;color:var(--text);line-height:1.65;margin-bottom:36px;white-space:pre-line;}
+#breath-intro-tap{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(94,207,177,0.5);opacity:0;transition:opacity .6s;}
+
+/* Splash */
+.splash{position:absolute;inset:0;background:var(--bg);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;cursor:pointer;}
+.splash-out{animation:splOut .7s cubic-bezier(.4,0,1,1) forwards;}
+@keyframes splOut{0%{opacity:1;transform:scale(1);}100%{opacity:0;transform:scale(1.04);}}
+.sp-glass{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;}
+.sp-wm{font-family:'Cormorant Garamond',serif;font-size:44px;font-weight:300;letter-spacing:.2em;color:var(--text);font-style:italic;text-align:center;opacity:0;animation:wmIn .9s ease 2.6s forwards;}
+.sp-wm span{color:var(--teal);}
+@keyframes wmIn{from{opacity:0;letter-spacing:.35em;}to{opacity:1;letter-spacing:.2em;}}
+.sp-sub{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.3em;color:var(--dim);text-transform:uppercase;text-align:center;opacity:0;animation:wmIn .6s ease 3.2s forwards;margin-top:10px;}
+.sp-tap{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.2em;color:rgba(94,207,177,.45);text-transform:uppercase;text-align:center;opacity:0;animation:fadeIn .6s ease 4s forwards;margin-top:36px;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+
+/* Disclaimer */
+#disclaimer-screen{position:absolute;inset:0;z-index:500;background:#040408;display:none;flex-direction:column;align-items:center;justify-content:flex-start;padding:44px 28px 32px;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.disc-logo{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:24px;color:var(--text);letter-spacing:.04em;margin-bottom:4px;}
+.disc-sub{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-bottom:22px;}
+.disc-body{font-family:'EB Garamond',serif;font-size:15px;line-height:1.7;color:var(--mid);max-width:360px;text-align:left;}
+.disc-body p{margin-bottom:0.85em;}
+.disc-body p:last-child{margin-bottom:0;}
+.disc-toggle-row{display:flex;align-items:flex-start;gap:12px;max-width:360px;margin-top:18px;cursor:pointer;}
+.disc-checkbox{width:22px;height:22px;border-radius:6px;border:1.5px solid rgba(94,207,177,.4);background:transparent;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:2px;transition:all .2s;}
+.disc-checkbox.on{background:rgba(94,207,177,.15);border-color:var(--teal);}
+.disc-checkbox-mark{opacity:0;color:var(--teal);font-size:14px;transition:opacity .15s;}
+.disc-checkbox.on .disc-checkbox-mark{opacity:1;}
+.disc-toggle-lbl{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.08em;line-height:1.7;color:var(--dim);}
+.disc-cta{margin-top:18px;width:100%;max-width:360px;padding:16px;border-radius:var(--r);font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;text-align:center;cursor:pointer;transition:all .2s;border:1px solid var(--border);color:var(--dim);background:transparent;}
+.disc-cta.ready{border-color:rgba(94,207,177,.5);color:var(--teal);background:rgba(94,207,177,.07);}
+.disc-cas{font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);letter-spacing:.12em;text-transform:uppercase;margin-top:18px;margin-bottom:12px;opacity:.5;}
+</style>
+</head>
+<body>
+<script>
+function fitPhone(){
+  var w=document.querySelector('.phone-wrap');
+  if(!w)return;
+  var vh=window.innerHeight,vw=window.innerWidth;
+  var scale=Math.min(vh/870, vw/410, 1);
+  w.style.transform='translate(-50%,-50%) scale('+scale+')';
+}
+window.addEventListener('resize',fitPhone);
+window.addEventListener('load',fitPhone);
+setTimeout(fitPhone,50);
+</script>
+
+<div class="phone-wrap">
+<div class="phone">
+  <div class="notch"></div>
+  <div class="orb orb-t"></div>
+  <div class="orb orb-v"></div>
+
+  <!-- DISCLAIMER -->
+  <div id="disclaimer-screen">
+    <div class="disc-logo">Grypnôse</div>
+    <div class="disc-sub">Before you begin</div>
+    <div class="disc-body">
+      <p>Grypnôse is a mental training tool designed for climbers. It uses auto-hypnosis to support focus, preparation, and your relationship with your sport — nothing more, and nothing less.</p>
+      <p>Wanting to feel better is a worthy pursuit. At CAS, we believe wholeheartedly in every person's right to seek what brings them fulfilment. Grypnôse may bring you calm, confidence, and a deeper connection to your climbing. We hope it does.</p>
+      <p>It is not therapy. It does not have the capacity to heal, to diagnose, or to replace the work of a qualified professional. Using it in place of therapeutic support — or hoping it will serve that purpose — would be a mistake, and one we would not want for you.</p>
+      <p>If you or someone you know is experiencing psychological difficulty, please seek the support of a trained therapist. That is where healing lives.</p>
+      <p>Grypnôse is for your climbing. What happens beyond that is yours to navigate — and yours alone to take responsibility for.</p>
+    </div>
+    <div class="disc-toggle-row" id="disc-toggle-row">
+      <div class="disc-checkbox" id="disc-checkbox"><span class="disc-checkbox-mark">✓</span></div>
+      <div class="disc-toggle-lbl">I understand that Grypnôse is a sports mental training tool, not a therapeutic or medical application, and that any use beyond this scope is my own responsibility.</div>
+    </div>
+    <div class="disc-cta" id="disc-cta">I understand — enter Grypnôse</div>
+    <div class="disc-cas">CAS · climb as sport</div>
+  </div>
+
+  <!-- SPLASH -->
+  <div class="splash" id="splash" style="display:none;">
+    <div class="sp-glass">
+      <svg width="96" height="172" viewBox="0 0 100 180" fill="none" style="display:block;margin:0 auto 22px;">
+        <defs>
+          <clipPath id="hg-top"><path d="M50,80 C28,80 12,70 6,42 C2,22 2,12 10,6 C18,2 82,2 90,6 C98,12 98,22 94,42 C88,70 72,80 50,80 Z"/></clipPath>
+          <clipPath id="hg-bot"><path d="M50,82 C28,82 12,92 6,120 C2,140 2,150 10,156 C18,160 82,160 90,156 C98,150 98,140 94,120 C88,92 72,82 50,82 Z"/></clipPath>
+        </defs>
+        <path d="M50,80 C28,80 12,70 6,42 C2,22 2,12 10,6 C18,2 82,2 90,6 C98,12 98,22 94,42 C88,70 72,80 50,80 Z"
+              stroke="rgba(94,207,177,0.42)" stroke-width="1" fill="rgba(94,207,177,0.03)"/>
+        <path d="M50,82 C28,82 12,92 6,120 C2,140 2,150 10,156 C18,160 82,160 90,156 C98,150 98,140 94,120 C88,92 72,82 50,82 Z"
+              stroke="rgba(94,207,177,0.42)" stroke-width="1" fill="rgba(94,207,177,0.03)"/>
+        <circle cx="50" cy="79.5" r="1.3" fill="rgba(94,207,177,0.4)"/>
+        <circle cx="50" cy="82.5" r="1.3" fill="rgba(94,207,177,0.25)"/>
+
+        <!-- TOP HALF: climbing elements draining into neck -->
+        <g clip-path="url(#hg-top)">
+          <g>
+            <animate attributeName="opacity" values="0;1;1;0" dur="5s" begin="0.2s" fill="freeze" keyTimes="0;0.2;0.6;1"/>
+            <animateTransform attributeName="transform" type="translate" values="0 0;26 55" dur="1.5s" begin="4s" fill="freeze" calcMode="spline" keySplines="0.3 0 0.7 1"/>
+            <rect x="14" y="12" width="22" height="24" rx="2" fill="rgba(155,127,232,0.08)" stroke="rgba(155,127,232,0.55)" stroke-width="0.7"/>
+            <circle cx="18" cy="17" r="1" fill="rgba(94,207,177,0.85)"/>
+            <circle cx="24" cy="18" r="1" fill="rgba(155,127,232,0.85)"/>
+            <circle cx="30" cy="19" r="0.9" fill="rgba(232,127,127,0.85)"/>
+            <circle cx="21" cy="24" r="0.9" fill="rgba(201,169,110,0.75)"/>
+            <circle cx="28" cy="23" r="1" fill="rgba(155,127,232,0.9)"/>
+            <circle cx="25" cy="29" r="0.9" fill="rgba(94,207,177,0.8)"/>
+            <circle cx="32" cy="31" r="0.8" fill="rgba(232,127,127,0.7)"/>
+            <circle cx="19" cy="32" r="0.8" fill="rgba(155,127,232,0.7)"/>
+          </g>
+          <g>
+            <animate attributeName="opacity" values="0;0;1;1;0" dur="5s" begin="0.4s" fill="freeze" keyTimes="0;0.1;0.3;0.6;1"/>
+            <animateTransform attributeName="transform" type="translate" values="0 0;1 50" dur="1.5s" begin="4.1s" fill="freeze" calcMode="spline" keySplines="0.3 0 0.7 1"/>
+            <rect x="42" y="14" width="14" height="30" rx="1" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.4)" stroke-width="0.7"/>
+            <line x1="44" y1="20" x2="54" y2="20" stroke="rgba(255,255,255,0.5)" stroke-width="0.9"/>
+            <line x1="44" y1="26" x2="54" y2="26" stroke="rgba(255,255,255,0.5)" stroke-width="0.9"/>
+            <line x1="44" y1="32" x2="54" y2="32" stroke="rgba(255,255,255,0.5)" stroke-width="0.9"/>
+            <line x1="44" y1="38" x2="54" y2="38" stroke="rgba(255,255,255,0.5)" stroke-width="0.9"/>
+          </g>
+          <g>
+            <animate attributeName="opacity" values="0;0;1;1;0" dur="5s" begin="0.6s" fill="freeze" keyTimes="0;0.15;0.35;0.6;1"/>
+            <animateTransform attributeName="transform" type="translate" values="0 0;-23 60" dur="1.5s" begin="4.2s" fill="freeze" calcMode="spline" keySplines="0.3 0 0.7 1"/>
+            <rect x="62" y="14" width="22" height="9" rx="1.5" fill="rgba(232,127,127,0.35)" stroke="rgba(232,127,127,0.9)" stroke-width="0.7"/>
+            <circle cx="66" cy="18.5" r="1" fill="rgba(0,0,0,0.35)"/>
+            <circle cx="71" cy="18.5" r="1" fill="rgba(0,0,0,0.35)"/>
+            <circle cx="76" cy="18.5" r="1" fill="rgba(0,0,0,0.35)"/>
+            <circle cx="81" cy="18.5" r="1" fill="rgba(0,0,0,0.35)"/>
+          </g>
+          <g>
+            <animate attributeName="opacity" values="0;0;1;1;0" dur="5s" begin="0.9s" fill="freeze" keyTimes="0;0.2;0.4;0.6;1"/>
+            <animateTransform attributeName="transform" type="translate" values="0 0;-14 42" dur="1.5s" begin="4.3s" fill="freeze" calcMode="spline" keySplines="0.3 0 0.7 1"/>
+            <circle cx="65" cy="32" r="3.5" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.5)" stroke-width="0.6"/>
+            <circle cx="60" cy="35" r="2.5" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.5)" stroke-width="0.6"/>
+            <circle cx="69" cy="36" r="2.8" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.5)" stroke-width="0.6"/>
+            <circle cx="58" cy="41" r="0.7" fill="rgba(255,255,255,0.4)"/>
+            <circle cx="56" cy="44" r="0.5" fill="rgba(255,255,255,0.3)"/>
+          </g>
+          <g>
+            <animate attributeName="opacity" values="0;0;1;1;0" dur="5s" begin="1.1s" fill="freeze" keyTimes="0;0.2;0.4;0.6;1"/>
+            <animateTransform attributeName="transform" type="translate" values="0 0;25 32" dur="1.5s" begin="4.1s" fill="freeze" calcMode="spline" keySplines="0.3 0 0.7 1"/>
+            <path d="M22,42 L20,52 L30,52 L28,42 Z" fill="rgba(94,207,177,0.25)" stroke="rgba(94,207,177,0.85)" stroke-width="0.7"/>
+            <ellipse cx="25" cy="42" rx="3" ry="0.8" fill="rgba(94,207,177,0.4)" stroke="rgba(94,207,177,0.8)" stroke-width="0.5"/>
+          </g>
+          <g>
+            <animate attributeName="opacity" values="0;0;1;1;0" dur="5s" begin="1.4s" fill="freeze" keyTimes="0;0.25;0.4;0.6;1"/>
+            <animateTransform attributeName="transform" type="translate" values="0 0;6 24" dur="1.5s" begin="4.2s" fill="freeze" calcMode="spline" keySplines="0.3 0 0.7 1"/>
+            <polygon points="38,52 44,49 50,52 50,58 44,61 38,58" fill="rgba(201,169,110,0.45)" stroke="rgba(201,169,110,0.95)" stroke-width="0.7"/>
+            <circle cx="44" cy="55" r="1.8" fill="rgba(0,0,0,0.35)" stroke="rgba(201,169,110,0.7)" stroke-width="0.4"/>
+          </g>
+          <g>
+            <animate attributeName="opacity" values="0;0;1;1;0" dur="5s" begin="1.6s" fill="freeze" keyTimes="0;0.25;0.4;0.6;1"/>
+            <animateTransform attributeName="transform" type="translate" values="0 0;-18 24" dur="1.5s" begin="4.3s" fill="freeze" calcMode="spline" keySplines="0.3 0 0.7 1"/>
+            <path d="M58,52 Q68,49 78,54 Q76,60 68,62 Q60,60 58,56 Z" fill="rgba(55,138,221,0.35)" stroke="rgba(55,138,221,0.95)" stroke-width="0.7"/>
+            <circle cx="70" cy="56" r="0.9" fill="rgba(0,0,0,0.45)"/>
+          </g>
+          <circle r="1.3" fill="rgba(94,207,177,0.7)">
+            <animate attributeName="cx" values="30;50" dur="1.3s" begin="4.5s" repeatCount="3" calcMode="spline" keySplines="0.4 0 0.8 1"/>
+            <animate attributeName="cy" values="40;78" dur="1.3s" begin="4.5s" repeatCount="3" calcMode="spline" keySplines="0.3 0 1 1"/>
+            <animate attributeName="opacity" values="0.7;0.4;0" dur="1.3s" begin="4.5s" repeatCount="3" keyTimes="0;0.8;1"/>
+          </circle>
+          <circle r="1.1" fill="rgba(155,127,232,0.7)">
+            <animate attributeName="cx" values="68;50" dur="1.5s" begin="4.7s" repeatCount="3" calcMode="spline" keySplines="0.4 0 0.8 1"/>
+            <animate attributeName="cy" values="44;78" dur="1.5s" begin="4.7s" repeatCount="3" calcMode="spline" keySplines="0.3 0 1 1"/>
+            <animate attributeName="opacity" values="0.7;0.4;0" dur="1.5s" begin="4.7s" repeatCount="3" keyTimes="0;0.8;1"/>
+          </circle>
+        </g>
+
+        <!-- BOTTOM HALF: mountain grows from peak upward -->
+        <g clip-path="url(#hg-bot)">
+          <circle r="1.2" fill="rgba(94,207,177,0.5)">
+            <animate attributeName="cx" values="50;30" dur="1.5s" begin="4s" repeatCount="4" calcMode="spline" keySplines="0 0 0.6 1"/>
+            <animate attributeName="cy" values="84;148" dur="1.5s" begin="4s" repeatCount="4" calcMode="spline" keySplines="0 0 0.6 1"/>
+            <animate attributeName="opacity" values="0.5;0.2;0" dur="1.5s" begin="4s" repeatCount="4"/>
+          </circle>
+          <circle r="1.1" fill="rgba(155,127,232,0.5)">
+            <animate attributeName="cx" values="50;70" dur="1.7s" begin="4.3s" repeatCount="4" calcMode="spline" keySplines="0 0 0.6 1"/>
+            <animate attributeName="cy" values="84;150" dur="1.7s" begin="4.3s" repeatCount="4" calcMode="spline" keySplines="0 0 0.6 1"/>
+            <animate attributeName="opacity" values="0.5;0.2;0" dur="1.7s" begin="4.3s" repeatCount="4"/>
+          </circle>
+          <polygon points="50,156 50,156 50,156 50,156 50,156"
+                   fill="rgba(94,207,177,0.22)" stroke="rgba(94,207,177,0.6)" stroke-width="1.2" stroke-linejoin="round">
+            <animate attributeName="points"
+                     values="50,156 50,156 50,156 50,156 50,156;
+                             46,156 49,150 50,148 51,150 54,156;
+                             38,156 47,135 50,130 53,135 62,156;
+                             28,156 45,122 50,115 55,122 72,156;
+                             20,156 45,118 50,115 55,118 80,156"
+                     dur="2.4s" begin="4.2s" fill="freeze" calcMode="spline"
+                     keySplines="0.2 0 0.35 1;0.2 0 0.35 1;0.2 0 0.35 1;0.2 0 0.35 1"/>
+          </polygon>
+        </g>
+      </svg>
+      <div class="sp-wm">Gryp<span>nô</span>se</div>
+      <div class="sp-sub">breathe · climb · return</div>
+      <div class="sp-tap">tap anywhere to enter</div>
+    </div>
+  </div>
+
+  <div class="statusbar"><span class="st" id="clock">—</span><span></span><span class="st" style="letter-spacing:2px">· · ·</span></div>
+
+  <div class="sc-wrap">
+    <!-- HOME -->
+    <div class="home" id="home">
+      <div class="home-head">
+        <div class="wordmark">Gryp<span>nô</span>se</div>
+        <div class="subtitle">valle dell'orco · trip session</div>
+      </div>
+
+      <div class="home-card">
+        <div class="route-name">Green Spit</div>
+        <div class="route-meta">Valle dell'Orco · granite · projecting</div>
+        <div class="route-note">The first hard line that called you here, many years ago. The dream becoming a route, the route becoming a body, the body becoming a send.</div>
+        <span class="cat-badge">projecting</span>
+      </div>
+
+      <div class="pre-settings">
+        <div class="pref-row">
+          <div>
+            <div class="pref-lbl">Breathing assisted</div>
+            <div class="pref-sub">4 cycles of 4·4·6 before & after</div>
+          </div>
+          <div class="pref-toggle on" id="pref-breathing"><div class="pref-knob"></div></div>
+        </div>
+        <div class="pref-row">
+          <div>
+            <div class="pref-lbl">Tap for each suggestion</div>
+            <div class="pref-sub">Off: lines advance automatically</div>
+          </div>
+          <div class="pref-toggle on" id="pref-tap"><div class="pref-knob"></div></div>
+        </div>
+        <div class="pref-row">
+          <div>
+            <div class="pref-lbl">Binaural sound</div>
+            <div class="pref-sub">Phase-tuned tones. Headphones required.</div>
+          </div>
+          <div class="pref-toggle on" id="pref-binaural"><div class="pref-knob"></div></div>
+        </div>
+      </div>
+
+      <div class="sp-play" id="begin-btn">
+        <span>Begin session</span><span style="color:var(--teal);">✦</span>
+      </div>
+
+      <div class="home-foot">
+        <div class="home-foot-cas">CAS · climb as sport</div>
+      </div>
+    </div>
+
+    <!-- READER -->
+    <div id="sreader">
+      <div id="sreader-bloom"></div>
+      <div id="rdr-breath"></div>
+      <div id="sreader-phase"></div>
+      <div id="sreader-text"></div>
+      <div id="sreader-tap">tap to continue</div>
+      <div id="sreader-done">session complete ✦</div>
+      <div id="sreader-progress"></div>
+      <div id="reader-mute" title="Mute / unmute voice">
+        <svg id="reader-mute-on" viewBox="0 0 20 20" fill="none" style="display:block;"><path d="M3 7v6h3l4 3V4L6 7H3z" stroke="rgba(94,207,177,.7)" stroke-width="1.3" stroke-linejoin="round"/><path d="M13 7c1 1 1 5 0 6M15 5c2 2 2 8 0 10" stroke="rgba(94,207,177,.55)" stroke-width="1.3" stroke-linecap="round"/></svg>
+        <svg id="reader-mute-off" viewBox="0 0 20 20" fill="none" style="display:none;"><path d="M3 7v6h3l4 3V4L6 7H3z" stroke="rgba(232,228,220,.5)" stroke-width="1.3" stroke-linejoin="round"/><line x1="13" y1="7" x2="17" y2="13" stroke="rgba(232,127,127,.7)" stroke-width="1.3" stroke-linecap="round"/><line x1="17" y1="7" x2="13" y2="13" stroke="rgba(232,127,127,.7)" stroke-width="1.3" stroke-linecap="round"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- BREATHING OVERLAY -->
+  <div class="boverlay" id="boverlay">
+    <div class="bclose" id="bclose">×</div>
+    <div id="breath-intro">
+      <div id="breath-intro-text"></div>
+      <div id="breath-intro-tap">tap to begin</div>
+    </div>
+    <div id="breath-circle-wrap" style="display:none;flex-direction:column;align-items:center;justify-content:center;">
+      <div class="borb-wrap">
+        <div class="borb-core" id="borb">
+          <div class="bphase" id="bphase"></div>
+          <div class="btext" id="btext"></div>
+        </div>
+      </div>
+      <div class="bctag" id="bctag">session</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════
+//  GREEN SPIT — pre-baked session content
+//  Phrasing rules: present tense, positive formulations, phonetic
+//  literalism, French + English + Cantonese (Jyutping) bridges,
+//  modals (perhaps, maybe), addressing Michelle with tenderness,
+//  dissociation → meet Michelle → reassociation.
+// ════════════════════════════════════════════════════════════
+
+var SESSION = {
+  title: 'Green Spit',
+  phases: [
+    {
+      id: 'breathing_entry',
+      label: 'Breathing entry',
+      color: 'rgba(94,207,177,0.7)',
+      bg: 'rgba(2,12,10,1)',
+      cards: [
+        'I arrive — fully — at the base of the wall.',
+        'The valley breathes with me.',
+        'Stillness holds everything I carry.',
+        'What is not mine — releases now, gently.'
+      ]
+    },
+    {
+      id: 'induction',
+      label: 'Induction',
+      color: 'rgba(155,127,232,0.7)',
+      bg: 'rgba(6,5,14,1)',
+      cards: [
+        'You are already here. The valley is already here. The granite is already here.',
+        'Perhaps you notice — your hands already know jams. Your hands already know granite.',
+        'It is possible that a part of you arrived in Valle dell\u2019Orco long before today.',
+        'The sound at the base — wind, water, breath — is, perhaps, already inside you.'
+      ]
+    },
+    {
+      id: 'safety_fuse',
+      label: 'Safety fuse',
+      color: 'rgba(201,169,110,0.7)',
+      bg: 'rgba(10,9,4,1)',
+      cards: [
+        'Everything that follows can only move toward good.',
+        'My inner protector is invited. She listens with me, here.',
+        'I am here by choice — and what serves me is what stays.',
+        'Today, my body is safe. My nerves are safe. My dream is safe.'
+      ]
+    },
+    {
+      id: 'dissociation',
+      label: 'Dissociation',
+      color: 'rgba(155,127,232,0.5)',
+      bg: 'rgba(4,3,14,1)',
+      cards: [
+        'My arm — perhaps — already feels a little softer than it was a moment ago.',
+        'And another part of me — the part that knows the granite — is already going further, ahead of the thinking.',
+        'There is a Michelle who watches. There is a Michelle who climbs. Both are here. Both are safe.',
+        'And inside — a third Michelle. The protective one. She is invited now. Sois bienvenue.'
+      ]
+    },
+    {
+      id: 'session_content',
+      label: 'Session content',
+      color: 'rgba(94,207,177,0.7)',
+      bg: 'rgba(2,10,10,1)',
+      cards: [
+        'Valle dell\u2019Orco. Granite — slightly green — perfectly itself. The jams hold you. Tu es solide.',
+        'Below — the river. Around — the wind moving through stone. Above — the route, dry today, waiting. 靜 (jing). Stillness.',
+        'Green Spit. The first hard line that made you feel alive in Europe — many years ago. The Michelle who dreamed this is in you now, fully.',
+        'The line you love. The movement you love. The place you love. Perhaps the love is, already, the climbing itself.',
+        'Michelle — the protective one — once asked: how do we stay safe in a future we have never seen? And so she made the future look like the past. She did this from love.',
+        'When you climbed well and then stopped — that was Michelle. When the tears came, when the rage came — that was Michelle, doing her job. She did it beautifully.',
+        'And now — there is news Michelle has not yet heard. The old foundation — \u201CI do not deserve, I cannot speak\u201D — has been loosened. By you. By deep work. There is space now.',
+        'Michelle — listen. Succeeding is safe. Being seen is safe. Being a pro climber is safe. Speaking is safe. Being the woman you dreamed to be is safe.',
+        'It is not impossible — that you climb this route. It is, perhaps, simply time.',
+        'At the festival — strong women. Their voices, their laughter, their hands. They are with you on this route. You are in lineage. 放心 (fong sam) — let go of worry.',
+        'And now — the final boulder. The body knows. The body remembers each move before doing it.',
+        'Right hand — jam. Right foot — jam. Souple. Solid. Fond.',
+        'Big move. Left hand reaches the ring lock. The constriction welcomes the hand. The hand is exactly the right shape. You are exactly the right climber for this rock.',
+        'Right hand jams beside it. Left foot — the crimp. Right foot — the lower constriction. Each placement, fluide. The order lives in the body.',
+        'Left hand — the sloper. Compression. Your body becomes the shape that holds. Right foot — heel. Right hand — up to the sloper. Left hand — up. The top-out arrives, naturally, like a sentence finishing itself. 送 (sóng).',
+        'And at the top — you are the fifth woman. Or perhaps the moment is so private it is only yours. Both are real. The dream completed itself through your body. You have achieved something you did not even know was possible for yourself.'
+      ]
+    },
+    {
+      id: 'reassociation',
+      label: 'Reassociation',
+      color: 'rgba(94,207,177,0.55)',
+      bg: 'rgba(2,10,9,1)',
+      cards: [
+        'My breath returns first. Then my hands. Then — I am here again, fully, warmly, woven back into the body.',
+        'Michelle — the protective one — comes with me. Informed. Updated. Eyes opening with mine.',
+        'Everything I have done — stays done. The dream is alive in the body.',
+        'When I open my eyes — the route is there. The valley is there. The send is closer than it was.'
+      ]
+    },
+    {
+      id: 'breathing_exit',
+      label: 'Breathing exit',
+      color: 'rgba(94,207,177,0.7)',
+      bg: 'rgba(2,11,10,1)',
+      cards: [
+        'I return — fully, warmly.',
+        'My body wakes — bright, clear.',
+        'What serves me — stays with me.',
+        'I open my eyes into a day that is, already, mine.'
+      ]
+    }
+  ]
+};
+
+// ════════════════════════════════════════════════════════════
+//  Clock
+// ════════════════════════════════════════════════════════════
+function updateClock(){
+  var d=new Date();
+  var h=d.getHours().toString().padStart(2,'0');
+  var m=d.getMinutes().toString().padStart(2,'0');
+  var el=document.getElementById('clock');
+  if(el)el.textContent=h+':'+m;
+}
+updateClock();
+setInterval(updateClock,30000);
+
+// ════════════════════════════════════════════════════════════
+//  Disclaimer
+// ════════════════════════════════════════════════════════════
+var DISCLAIMER_KEY='gn_disclaimer_v1';
+var discScreen=document.getElementById('disclaimer-screen');
+var discCheckbox=document.getElementById('disc-checkbox');
+var discToggleRow=document.getElementById('disc-toggle-row');
+var discCta=document.getElementById('disc-cta');
+var splashEl=document.getElementById('splash');
+var discAccepted=false;
+
+function showSplash(){
+  if(splashEl){splashEl.style.display='flex';}
+}
+
+function checkDisclaimer(){
+  var accepted=false;
+  try{accepted=localStorage.getItem(DISCLAIMER_KEY)==='true';}catch(e){}
+  if(accepted){
+    showSplash();
+  }else{
+    discScreen.style.display='flex';
+  }
+}
+
+discToggleRow.addEventListener('click',function(){
+  discAccepted=!discAccepted;
+  discCheckbox.classList.toggle('on',discAccepted);
+  discCta.classList.toggle('ready',discAccepted);
+});
+
+discCta.addEventListener('click',function(){
+  if(!discAccepted)return;
+  try{localStorage.setItem(DISCLAIMER_KEY,'true');}catch(e){}
+  discScreen.style.display='none';
+  showSplash();
+});
+
+checkDisclaimer();
+
+// ════════════════════════════════════════════════════════════
+//  Splash
+// ════════════════════════════════════════════════════════════
+function dismissSplash(){
+  if(!splashEl||splashEl.style.display==='none')return;
+  splashEl.classList.add('splash-out');
+  setTimeout(function(){splashEl.style.display='none';},700);
+}
+splashEl.addEventListener('click',dismissSplash);
+
+// ════════════════════════════════════════════════════════════
+//  Preferences
+// ════════════════════════════════════════════════════════════
+var prefBreathing=document.getElementById('pref-breathing');
+var prefTap=document.getElementById('pref-tap');
+var prefBinaural=document.getElementById('pref-binaural');
+function toggleAttach(el,key){
+  el.addEventListener('click',function(){
+    el.classList.toggle('on');
+  });
+}
+toggleAttach(prefBreathing,'breathing');
+toggleAttach(prefTap,'tap');
+toggleAttach(prefBinaural,'binaural');
+
+// ════════════════════════════════════════════════════════════
+//  Binaural engine — phase-tuned stereo tones (Web Audio API)
+//  Base carrier 200 Hz, offset Hz per ear → brain hears the beat
+//  Phase frequencies: alpha for alert/relaxed, theta for trance
+// ════════════════════════════════════════════════════════════
+var PHASE_HZ = {
+  breathing_entry: 14,   // low alpha — alert relaxation
+  induction:       10,   // alpha — relaxed but aware
+  safety_fuse:     10,   // alpha
+  dissociation:     6,   // theta — deep trance
+  session_content:  6,   // theta
+  reassociation:   10,   // alpha — coming back
+  breathing_exit:  14    // returning to alert
+};
+
+var binauralCtx = null;
+var binauralNodes = [];
+var binauralEnabled = true;   // synced from prefBinaural at session start, and from mute btn
+var binauralBaseVol = 0.3 * 0.5;  // 50% effective volume (gentle)
+var currentBinauralPhase = null;
+
+function startBinaural(freqHz){
+  if(!binauralCtx){
+    try{ binauralCtx = new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ return; }
+  }
+  if(binauralCtx.state === 'suspended'){
+    try{ binauralCtx.resume(); }catch(e){}
+  }
+  var base = 200;
+  var now = binauralCtx.currentTime;
+  var targetVol = binauralEnabled ? binauralBaseVol : 0;
+
+  // If oscillators already running, smooth-ramp frequency & volume — no click
+  if(binauralNodes.length && binauralNodes[0] && binauralNodes[0].frequency){
+    var existingGain = binauralNodes[binauralNodes.length-1];
+    binauralNodes[0].frequency.cancelScheduledValues(now);
+    binauralNodes[1].frequency.cancelScheduledValues(now);
+    binauralNodes[0].frequency.linearRampToValueAtTime(base, now+2);
+    binauralNodes[1].frequency.linearRampToValueAtTime(base+freqHz, now+2);
+    existingGain.gain.cancelScheduledValues(now);
+    existingGain.gain.linearRampToValueAtTime(targetVol, now+1);
+    return;
+  }
+
+  stopBinauralImmediate();
+
+  var gainNode = binauralCtx.createGain();
+  gainNode.gain.setValueAtTime(0, now);
+  gainNode.gain.linearRampToValueAtTime(targetVol, now+1.5);
+  gainNode.connect(binauralCtx.destination);
+
+  // Left ear
+  var oscL = binauralCtx.createOscillator();
+  var panL = binauralCtx.createStereoPanner ? binauralCtx.createStereoPanner() : null;
+  oscL.frequency.value = base; oscL.type = 'sine';
+  if(panL){ panL.pan.value = -1; oscL.connect(panL); panL.connect(gainNode); }
+  else { oscL.connect(gainNode); }
+  oscL.start();
+
+  // Right ear
+  var oscR = binauralCtx.createOscillator();
+  var panR = binauralCtx.createStereoPanner ? binauralCtx.createStereoPanner() : null;
+  oscR.frequency.value = base + freqHz; oscR.type = 'sine';
+  if(panR){ panR.pan.value = 1; oscR.connect(panR); panR.connect(gainNode); }
+  else { oscR.connect(gainNode); }
+  oscR.start();
+
+  binauralNodes = [oscL, oscR, gainNode];
+}
+
+function stopBinaural(){
+  if(!binauralCtx || !binauralNodes.length) return;
+  var now = binauralCtx.currentTime;
+  var gn = binauralNodes[binauralNodes.length-1];
+  if(gn && gn.gain){
+    gn.gain.cancelScheduledValues(now);
+    gn.gain.setValueAtTime(gn.gain.value, now);
+    gn.gain.linearRampToValueAtTime(0, now+0.8);
+  }
+  var nodesToStop = binauralNodes.slice();
+  binauralNodes = [];
+  setTimeout(function(){
+    nodesToStop.forEach(function(n){ try{ n.stop && n.stop(); }catch(e){} });
+  }, 900);
+}
+
+function stopBinauralImmediate(){
+  // Internal: instant stop without fade — used when restarting fresh
+  var nodesToStop = binauralNodes.slice();
+  binauralNodes = [];
+  nodesToStop.forEach(function(n){ try{ n.stop && n.stop(); }catch(e){} });
+}
+
+function setBinauralPhase(phaseId){
+  if(!phaseId || !PHASE_HZ[phaseId]) return;
+  if(phaseId === currentBinauralPhase) return;
+  currentBinauralPhase = phaseId;
+  startBinaural(PHASE_HZ[phaseId]);
+}
+
+function muteBinaural(){
+  if(!binauralCtx || !binauralNodes.length) return;
+  var now = binauralCtx.currentTime;
+  var gn = binauralNodes[binauralNodes.length-1];
+  if(gn && gn.gain){
+    gn.gain.cancelScheduledValues(now);
+    gn.gain.setValueAtTime(gn.gain.value, now);
+    gn.gain.linearRampToValueAtTime(0, now+0.6);
+  }
+}
+
+function unmuteBinaural(){
+  if(!binauralCtx || !binauralNodes.length) return;
+  var now = binauralCtx.currentTime;
+  var gn = binauralNodes[binauralNodes.length-1];
+  if(gn && gn.gain){
+    gn.gain.cancelScheduledValues(now);
+    gn.gain.setValueAtTime(gn.gain.value, now);
+    gn.gain.linearRampToValueAtTime(binauralBaseVol, now+0.8);
+  }
+}
+
+// ════════════════════════════════════════════════════════════
+//  Wake Lock — keep screen on during a session
+// ════════════════════════════════════════════════════════════
+var wakeLock = null;
+async function acquireWakeLock(){
+  if(!('wakeLock' in navigator)) return;
+  try{
+    wakeLock = await navigator.wakeLock.request('screen');
+    wakeLock.addEventListener('release', function(){ wakeLock = null; });
+  }catch(e){}
+}
+function releaseWakeLock(){
+  if(wakeLock){
+    try{ wakeLock.release(); }catch(e){}
+    wakeLock = null;
+  }
+}
+document.addEventListener('visibilitychange', function(){
+  if(document.visibilityState === 'visible' && readerActive){
+    acquireWakeLock();
+    // Audio contexts get suspended on iOS background — resume
+    if(binauralCtx && binauralCtx.state === 'suspended'){
+      try{ binauralCtx.resume(); }catch(e){}
+    }
+  }
+});
+
+// ════════════════════════════════════════════════════════════
+//  Breathing overlay (4·4·6 cardiac coherence, 4 cycles)
+// ════════════════════════════════════════════════════════════
+var boverlay=document.getElementById('boverlay');
+var bclose=document.getElementById('bclose');
+var borb=document.getElementById('borb');
+var bphaseEl=document.getElementById('bphase');
+var btextEl=document.getElementById('btext');
+var bctagEl=document.getElementById('bctag');
+var breathIntro=document.getElementById('breath-intro');
+var breathIntroText=document.getElementById('breath-intro-text');
+var breathIntroTap=document.getElementById('breath-intro-tap');
+var breathCircleWrap=document.getElementById('breath-circle-wrap');
+
+var breathRunning=false;
+var breathTimers=[];
+function clearBreathTimers(){breathTimers.forEach(function(t){clearTimeout(t);});breathTimers=[];}
+
+function openBreathing(introMessage,cycles,onComplete){
+  breathRunning=true;
+  boverlay.classList.add('on');
+  breathCircleWrap.style.display='none';
+  breathIntro.style.display='flex';
+  breathIntroText.textContent=introMessage;
+  breathIntroTap.style.opacity='0';
+  setTimeout(function(){breathIntroTap.style.opacity='1';},900);
+
+  function startCycles(){
+    breathIntro.style.display='none';
+    breathCircleWrap.style.display='flex';
+    var inhale=4000,hold=4000,exhale=6000;
+    var cycleN=0;
+    function runCycle(){
+      if(!breathRunning){return;}
+      if(cycleN>=cycles){
+        closeBreathing();
+        if(onComplete)setTimeout(onComplete,200);
+        return;
+      }
+      cycleN++;
+      bctagEl.textContent='cycle '+cycleN+' of '+cycles;
+      // Inhale
+      boverlay.classList.remove('b-hold','b-exhale');
+      boverlay.classList.add('b-inhale');
+      borb.className='borb-core inhale';
+      bphaseEl.textContent='inhale';
+      btextEl.textContent='I arrive.';
+      breathTimers.push(setTimeout(function(){
+        if(!breathRunning)return;
+        // Hold
+        boverlay.classList.remove('b-inhale','b-exhale');
+        boverlay.classList.add('b-hold');
+        borb.className='borb-core hold';
+        bphaseEl.textContent='hold';
+        btextEl.textContent='Stillness.';
+        breathTimers.push(setTimeout(function(){
+          if(!breathRunning)return;
+          // Exhale
+          boverlay.classList.remove('b-inhale','b-hold');
+          boverlay.classList.add('b-exhale');
+          borb.className='borb-core exhale';
+          bphaseEl.textContent='exhale';
+          btextEl.textContent='I let go.';
+          breathTimers.push(setTimeout(runCycle,exhale));
+        },hold));
+      },inhale));
+    }
+    runCycle();
+  }
+
+  function onIntroTap(){
+    boverlay.removeEventListener('click',onIntroTap);
+    startCycles();
+  }
+  setTimeout(function(){boverlay.addEventListener('click',onIntroTap);},700);
+}
+
+function closeBreathing(){
+  breathRunning=false;
+  clearBreathTimers();
+  boverlay.classList.remove('on','b-inhale','b-hold','b-exhale');
+  borb.className='borb-core';
+}
+
+bclose.addEventListener('click',function(e){
+  e.stopPropagation();
+  closeBreathing();
+});
+
+// ════════════════════════════════════════════════════════════
+//  Reader
+// ════════════════════════════════════════════════════════════
+var readerCards=[];
+var readerIdx=0;
+var readerSessionId=0;
+var readerAutoTimers=[];
+var readerActive=false;
+function clearReaderTimers(){readerAutoTimers.forEach(function(t){clearTimeout(t);});readerAutoTimers=[];}
+
+var homeEl=document.getElementById('home');
+var readerEl=document.getElementById('sreader');
+var readerPhaseEl=document.getElementById('sreader-phase');
+var readerTextEl=document.getElementById('sreader-text');
+var readerTapEl=document.getElementById('sreader-tap');
+var readerDoneEl=document.getElementById('sreader-done');
+var readerProgressEl=document.getElementById('sreader-progress');
+var readerBloomEl=document.getElementById('sreader-bloom');
+var readerBreathEl=document.getElementById('rdr-breath');
+var readerMuteBtn=document.getElementById('reader-mute');
+var muteOnIcon=document.getElementById('reader-mute-on');
+var muteOffIcon=document.getElementById('reader-mute-off');
+
+function updateMuteIcon(){
+  if(binauralEnabled){muteOnIcon.style.display='block';muteOffIcon.style.display='none';}
+  else{muteOnIcon.style.display='none';muteOffIcon.style.display='block';}
+}
+
+readerMuteBtn.addEventListener('click',function(e){
+  e.stopPropagation();
+  binauralEnabled=!binauralEnabled;
+  if(binauralEnabled){
+    unmuteBinaural();
+  }else{
+    muteBinaural();
+  }
+  updateMuteIcon();
+});
+
+function buildReaderCards(usedBreathing){
+  var cards=[];
+  cards.push({phase:'',text:'Find a comfortable position. Let your eyes soften. Each line lands in its own time.',intro:true,color:'rgba(232,228,220,0.35)',bg:'rgba(4,4,8,1)'});
+
+  SESSION.phases.forEach(function(ph){
+    if((ph.id==='breathing_entry'||ph.id==='breathing_exit')&&!usedBreathing)return;
+    if(ph.id==='breathing_entry'){
+      cards.push({phase:'',text:'A few breaths now, to go deeper. Let each line land with a breath.',intro:true,color:'rgba(94,207,177,0.45)',bg:ph.bg});
+    }
+    if(ph.id==='breathing_exit'){
+      cards.push({phase:'',text:'You are beginning to return. Let your breath lead the way back.',intro:true,color:'rgba(94,207,177,0.45)',bg:ph.bg});
+    }
+    ph.cards.forEach(function(t,i){
+      cards.push({phase:ph.label,phaseId:ph.id,text:t,first:i===0,color:ph.color,bg:ph.bg,breath:ph.id==='breathing_entry'||ph.id==='breathing_exit'});
+    });
+  });
+  return cards;
+}
+
+function renderProgress(){
+  readerProgressEl.innerHTML='';
+  readerCards.forEach(function(c,i){
+    var d=document.createElement('div');
+    d.className='rdr-dot'+(i===readerIdx?' on':(i<readerIdx?' done':''));
+    readerProgressEl.appendChild(d);
+  });
+}
+
+function showCard(idx){
+  if(idx<0||idx>=readerCards.length)return;
+  readerIdx=idx;
+  var card=readerCards[idx];
+  // Ramp binaural to this card's phase (no-op if same phase)
+  if(card.phaseId) setBinauralPhase(card.phaseId);
+  readerEl.style.background=card.bg||'rgba(4,4,8,1)';
+  readerBloomEl.style.background='radial-gradient(circle,'+card.color.replace(/[\d.]+\)$/,'0.07)')+',transparent 70%)';
+  readerPhaseEl.style.opacity='0';
+  readerTextEl.style.opacity='0';
+  setTimeout(function(){
+    readerPhaseEl.textContent=card.intro?'':card.phase;
+    readerPhaseEl.style.opacity=card.intro?'0':'1';
+    readerTextEl.textContent=card.text;
+    readerTextEl.style.opacity='1';
+    if(card.breath){
+      readerBreathEl.classList.remove('inhale','exhale');
+      void readerBreathEl.offsetWidth;
+      readerBreathEl.classList.add('inhale');
+      setTimeout(function(){
+        readerBreathEl.classList.remove('inhale');
+        readerBreathEl.classList.add('exhale');
+      },5500);
+    }else{
+      readerBreathEl.classList.remove('inhale','exhale');
+    }
+    renderProgress();
+  },220);
+}
+
+function startReader(usedBreathing,tapMode){
+  readerCards=buildReaderCards(usedBreathing);
+  readerSessionId++;
+  var mySession=readerSessionId;
+  readerIdx=0;
+  readerActive=true;
+  binauralEnabled=prefBinaural.classList.contains('on');
+  updateMuteIcon();
+  acquireWakeLock();
+
+  homeEl.style.display='none';
+  readerEl.style.display='flex';
+  readerEl.classList.add('sreader-animate');
+  readerDoneEl.style.display='none';
+  readerTapEl.style.display=tapMode?'block':'none';
+  readerTapEl.textContent=tapMode?'tap to continue':'';
+  readerMuteBtn.style.display=binauralEnabled?'flex':'none';
+
+  // Start binaural at the first phase that appears in the card list
+  if(binauralEnabled){
+    var firstPhase=null;
+    for(var i=0;i<readerCards.length;i++){
+      if(readerCards[i].phaseId){firstPhase=readerCards[i].phaseId;break;}
+    }
+    setBinauralPhase(firstPhase||'induction');
+  }
+
+  setTimeout(function(){
+    showCard(0);
+    setTimeout(function(){
+      if(readerSessionId!==mySession)return;
+      if(tapMode) runTapMode(mySession);
+      else runAutoMode(mySession);
+    },350);
+  },280);
+}
+
+function finishSession(mySession){
+  if(readerSessionId!==mySession)return;
+  readerDoneEl.style.display='block';
+  readerTapEl.style.display='none';
+  setTimeout(function(){
+    readerEl.addEventListener('click',function once(){
+      readerEl.removeEventListener('click',once);
+      exitReader();
+    });
+  },1200);
+}
+
+function runTapMode(mySession){
+  function onTap(e){
+    if(readerSessionId!==mySession)return;
+    if(e && e.target && e.target.closest && e.target.closest('#reader-mute'))return;
+    if(readerIdx>=readerCards.length-1){
+      readerEl.removeEventListener('click',onTap);
+      finishSession(mySession);
+      return;
+    }
+    showCard(readerIdx+1);
+  }
+  readerEl.addEventListener('click',onTap);
+}
+
+function runAutoMode(mySession){
+  function step(idx){
+    if(readerSessionId!==mySession)return;
+    showCard(idx);
+    var card=readerCards[idx];
+    // Dwell scaled to text length — slow reading pace with a comfortable floor and ceiling
+    var dwell=Math.max(9000,Math.min(22000,card.text.length*230));
+    // Intros and breath-phase cards get extra time to land with the breath
+    if(card.intro) dwell=Math.max(dwell,11000);
+    if(card.breath) dwell=Math.max(dwell,11000);
+    readerAutoTimers.push(setTimeout(function(){
+      if(readerSessionId!==mySession)return;
+      if(idx>=readerCards.length-1) finishSession(mySession);
+      else step(idx+1);
+    },dwell));
+  }
+  step(0);
+}
+
+function exitReader(){
+  clearReaderTimers();
+  stopBinaural();
+  currentBinauralPhase=null;
+  releaseWakeLock();
+  readerActive=false;
+  readerSessionId++;
+  readerEl.style.display='none';
+  readerEl.classList.remove('sreader-animate');
+  homeEl.style.display='flex';
+}
+
+// ════════════════════════════════════════════════════════════
+//  Begin button
+// ════════════════════════════════════════════════════════════
+var beginBtn=document.getElementById('begin-btn');
+beginBtn.addEventListener('click',function(){
+  // Prime the AudioContext — iOS requires audio to start from a user gesture
+  if(prefBinaural.classList.contains('on')){
+    try{
+      if(!binauralCtx) binauralCtx=new(window.AudioContext||window.webkitAudioContext)();
+      if(binauralCtx.state==='suspended') binauralCtx.resume();
+    }catch(e){}
+  }
+  var useBreath=prefBreathing.classList.contains('on');
+  var tapMode=prefTap.classList.contains('on');
+  if(useBreath){
+    var intro='A few breaths to settle in. Four in, four hold, six out. Tap when you are ready.';
+    openBreathing(intro,4,function(){
+      startReader(true,tapMode);
+    });
+  }else{
+    startReader(false,tapMode);
+  }
+});
+</script>
+</body>
+</html>
